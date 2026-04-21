@@ -1,0 +1,1372 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cookbook Club - Turtle Island</title>
+  <style>
+    *, *::before, *::after {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      font-size: 16px;
+      line-height: 1.6;
+      color: #333;
+      background: #faf9f7;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 24px 16px;
+    }
+
+    h1, h2, h3 {
+      margin: 0 0 16px 0;
+      line-height: 1.3;
+    }
+
+    h1 {
+      font-size: 1.75rem;
+      color: #2d2a26;
+    }
+
+    h2 {
+      font-size: 1.35rem;
+      color: #2d2a26;
+      border-bottom: 2px solid #e8e4df;
+      padding-bottom: 8px;
+      margin-top: 40px;
+    }
+
+    h3 {
+      font-size: 1.1rem;
+      color: #5a524a;
+      margin-top: 24px;
+    }
+
+    p {
+      margin: 0 0 12px 0;
+    }
+
+    a {
+      color: #1e6b52;
+    }
+
+    .hero {
+      background: #fff;
+      border-radius: 12px;
+      padding: 24px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+      margin-bottom: 24px;
+    }
+
+    .hero-subtitle {
+      font-size: 1.1rem;
+      color: #6b635a;
+      margin-bottom: 16px;
+    }
+
+    .hero-details {
+      background: #f3faf7;
+      border-radius: 8px;
+      padding: 16px;
+      margin: 16px 0;
+    }
+
+    .hero-details p {
+      margin: 8px 0;
+    }
+
+    .hero-details strong {
+      color: #2d2a26;
+    }
+
+    .highlight-box {
+      background: #e8f5f0;
+      border-left: 4px solid #1e6b52;
+      padding: 12px 16px;
+      margin: 16px 0;
+      border-radius: 0 8px 8px 0;
+    }
+
+    .house-photo {
+      width: 100%;
+      max-height: 480px;
+      object-fit: cover;
+      border-radius: 8px;
+      margin: 16px 0;
+    }
+
+    .btn {
+      display: inline-block;
+      background: #1e6b52;
+      color: #fff;
+      padding: 14px 28px;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 1rem;
+      border: none;
+      cursor: pointer;
+      transition: background 0.2s;
+      min-height: 48px;
+    }
+
+    .btn:hover, .btn:focus {
+      background: #165943;
+    }
+
+    .btn-secondary {
+      background: #6b635a;
+    }
+
+    .btn-secondary:hover, .btn-secondary:focus {
+      background: #5a524a;
+    }
+
+    .btn-small {
+      padding: 10px 16px;
+      font-size: 0.9rem;
+    }
+
+    .steps {
+      display: grid;
+      gap: 12px;
+      margin: 16px 0;
+    }
+
+    .step {
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+    }
+
+    .step-num {
+      background: #1e6b52;
+      color: #fff;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 600;
+      font-size: 0.9rem;
+      flex-shrink: 0;
+    }
+
+    .step-text {
+      padding-top: 2px;
+    }
+
+    .notes-list {
+      list-style: none;
+      padding: 0;
+      margin: 16px 0;
+    }
+
+    .notes-list li {
+      padding: 8px 0 8px 28px;
+      position: relative;
+    }
+
+    .notes-list li::before {
+      content: "•";
+      position: absolute;
+      left: 8px;
+      color: #1e6b52;
+      font-weight: bold;
+    }
+
+    .sheet-container {
+      background: #fff;
+      border-radius: 8px;
+      padding: 16px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+      margin: 16px 0;
+    }
+
+    .sheet-container iframe {
+      width: 100%;
+      height: 500px;
+      border: 0;
+      border-radius: 4px;
+    }
+
+    .sheet-mobile {
+      display: block;
+      margin: 20px 0;
+    }
+
+    .sheet-desktop {
+      display: none;
+    }
+
+    @media (min-width: 768px) {
+      .sheet-mobile {
+        display: none;
+      }
+
+      .sheet-desktop {
+        display: block;
+      }
+    }
+
+    .filters {
+      background: #fff;
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+      margin: 16px 0;
+    }
+
+    .search-box {
+      width: 100%;
+      padding: 14px 16px;
+      border: 2px solid #e8e4df;
+      border-radius: 8px;
+      font-size: 1rem;
+      margin-bottom: 16px;
+    }
+
+    .search-box:focus {
+      outline: none;
+      border-color: #1e6b52;
+    }
+
+    .filter-label {
+      font-size: 0.8rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: #8a8075;
+      margin-bottom: 8px;
+      margin-top: 4px;
+    }
+
+    .filter-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+
+    .chip {
+      padding: 10px 16px;
+      border: 2px solid #e8e4df;
+      border-radius: 20px;
+      background: #fff;
+      cursor: pointer;
+      font-size: 0.9rem;
+      transition: all 0.2s;
+      min-height: 44px;
+      font-family: inherit;
+      color: inherit;
+    }
+
+    .chip:hover, .chip:focus {
+      border-color: #1e6b52;
+    }
+
+    .chip.active {
+      background: #1e6b52;
+      color: #fff;
+      border-color: #1e6b52;
+    }
+
+    .source-toggles {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+
+    .toggle-btn {
+      padding: 10px 16px;
+      border: 2px solid #e8e4df;
+      border-radius: 8px;
+      background: #fff;
+      cursor: pointer;
+      font-size: 0.9rem;
+      transition: all 0.2s;
+      min-height: 44px;
+      font-family: inherit;
+      color: inherit;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .toggle-btn:hover, .toggle-btn:focus {
+      border-color: #1e6b52;
+    }
+
+    .toggle-btn.active {
+      background: #f3faf7;
+      border-color: #1e6b52;
+      color: #1e6b52;
+      font-weight: 600;
+    }
+
+    .toggle-btn.active::before {
+      content: "✓";
+      font-weight: 700;
+    }
+
+    .clear-filters {
+      background: none;
+      border: none;
+      color: #6b635a;
+      text-decoration: underline;
+      cursor: pointer;
+      font-size: 0.9rem;
+      padding: 8px 0;
+      font-family: inherit;
+    }
+
+    .hint-text {
+      font-size: 0.85rem;
+      color: #6b635a;
+      margin-top: 12px;
+    }
+
+    .legend {
+      background: #fbf8f3;
+      border: 1px solid #ece4d6;
+      border-radius: 8px;
+      padding: 12px 16px;
+      margin-top: 16px;
+      font-size: 0.85rem;
+      color: #5a524a;
+    }
+
+    .legend-title {
+      font-weight: 600;
+      color: #2d2a26;
+      margin-bottom: 6px;
+    }
+
+    .legend-scale {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      margin: 0 4px;
+      vertical-align: middle;
+    }
+
+    .legend-dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      display: inline-block;
+    }
+
+    .category-section {
+      margin: 32px 0;
+    }
+
+    .category-header {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .category-title {
+      font-size: 1.25rem;
+      color: #2d2a26;
+      margin: 0;
+    }
+
+    .category-count {
+      font-size: 0.85rem;
+      color: #8a8075;
+      font-weight: 400;
+      margin-left: 8px;
+    }
+
+    .recipe-grid {
+      display: grid;
+      gap: 16px;
+      grid-template-columns: 1fr;
+    }
+
+    @media (min-width: 600px) {
+      .recipe-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    .recipe-card {
+      background: #fff;
+      border-radius: 10px;
+      padding: 16px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+      border: 1px solid #e8e4df;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .recipe-name {
+      font-weight: 600;
+      color: #2d2a26;
+      margin-bottom: 6px;
+      font-size: 1rem;
+    }
+
+    .recipe-desc {
+      font-size: 0.9rem;
+      color: #5a524a;
+      margin-bottom: 10px;
+    }
+
+    .recipe-badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 10px;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 3px 9px;
+      border-radius: 12px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      line-height: 1.4;
+      border: 1px solid transparent;
+    }
+
+    .badge-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      display: inline-block;
+      flex-shrink: 0;
+    }
+
+    /* Shared color scale for levels 1-5 */
+    .level-1 { background: #e4f2e4; color: #2f5e3a; border-color: #c8e2cb; }
+    .level-2 { background: #e8f1d9; color: #4a6b1e; border-color: #d3e3bc; }
+    .level-3 { background: #faefd3; color: #806416; border-color: #eedbb0; }
+    .level-4 { background: #fbe0cb; color: #8c4a1d; border-color: #efc9ab; }
+    .level-5 { background: #f7d6cc; color: #8a3522; border-color: #e9bbab; }
+
+    .dot-1 { background: #4a8a55; }
+    .dot-2 { background: #7ea83a; }
+    .dot-3 { background: #cba233; }
+    .dot-4 { background: #d37332; }
+    .dot-5 { background: #b04728; }
+
+    .recipe-notes {
+      font-size: 0.8rem;
+      color: #7a6f63;
+      font-style: italic;
+      border-top: 1px dashed #e8e4df;
+      padding-top: 8px;
+      margin-top: auto;
+      margin-bottom: 10px;
+    }
+
+    .recipe-notes::before {
+      content: "Note: ";
+      font-weight: 600;
+      font-style: normal;
+      color: #5a524a;
+    }
+
+    .recipe-meta {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 12px;
+      margin-top: 8px;
+    }
+
+    .view-pdf-btn {
+      padding: 8px 14px;
+      font-size: 0.85rem;
+      min-height: 40px;
+    }
+
+    .footer-cta {
+      background: #fff;
+      border-radius: 12px;
+      padding: 24px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+      margin-top: 40px;
+      text-align: center;
+    }
+
+    .footer-cta p {
+      color: #6b635a;
+    }
+
+    .no-results {
+      text-align: center;
+      padding: 40px 20px;
+      color: #6b635a;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    @media (max-width: 480px) {
+      h1 {
+        font-size: 1.5rem;
+      }
+
+      h2 {
+        font-size: 1.2rem;
+      }
+
+      .btn {
+        padding: 12px 20px;
+        font-size: 0.95rem;
+      }
+
+      .hero {
+        padding: 20px;
+      }
+
+      .container {
+        padding: 16px 12px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+
+  <!-- HERO -->
+  <section class="hero">
+    <h1>Cookbook Club - Turtle Island</h1>
+    <p class="hero-subtitle">Recipes from <em>Turtle Island</em> by Sean Sherman</p>
+
+    <div class="hero-details">
+      <p><strong>Date:</strong> Sunday, May 3rd</p>
+      <p><strong>Time:</strong> Eat at 5:30 PM</p>
+      <p><strong>Location:</strong> Vicki's house, 46602 Co Rd 613, Nashwauk</p>
+    </div>
+
+    <div class="highlight-box">
+      <p><strong>Arrive any time after 4:30pm</strong> to visit or finish cooking your contribution.</p>
+    </div>
+
+    <p><strong>Choose one dish</strong> (or two if you're excited!). <strong>Please pick your dish by Friday, May 1st.</strong></p>
+
+    <img src="https://raw.githubusercontent.com/wruwtrix/cookbook_in_bibis_kitchen/main/house.jpg" alt="Vicki's house" class="house-photo">
+
+    <p style="margin-top: 20px;">
+      <a href="https://docs.google.com/forms/d/e/1FAIpQLSdMS8PpiPLefXv5nAcJMtCeDgSjvC3XxlYAJjve9yofyuZ6AA/viewform?usp=header" target="_blank" rel="noopener" class="btn">Claim Your Dish</a>
+    </p>
+  </section>
+
+  <!-- HOW THIS WORKS -->
+  <section>
+    <h2>How This Works</h2>
+    <div class="steps">
+      <div class="step">
+        <span class="step-num">1</span>
+        <span class="step-text">Browse recipes below (filter by category, search, or hide hard-to-source dishes)</span>
+      </div>
+      <div class="step">
+        <span class="step-num">2</span>
+        <span class="step-text">Click "View PDF" for full instructions</span>
+      </div>
+      <div class="step">
+        <span class="step-num">3</span>
+        <span class="step-text">Pick 1 dish (or 2 if you want!)</span>
+      </div>
+      <div class="step">
+        <span class="step-num">4</span>
+        <span class="step-text">Submit the claim form</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- NOTES -->
+  <section>
+    <h2>Notes &amp; What to Bring</h2>
+    <ul class="notes-list">
+      <li>Plan to bring enough for small portions for 6-8 people. I'll confirm how many are attending in the group text.</li>
+      <li>I'll have plates, silverware, napkins, cups, and some serving utensils.</li>
+      <li>I'll have sparkling and still water available. Bring any other beverage you prefer and we'll likely have one beverage from the book available.</li>
+      <li><strong>Use the group chat early to coordinate on specialty ingredient orders!</strong> Items like rose hip powder, sumac, dried elderberries, chaga powder, or mesquite flour can be split if multiple people need them.</li>
+      <li>Expect to make some substitutions due to seasonality and ingredient availability — that's totally fine. Most of these recipes are doable if you either order specialty ingredients ahead or plan to reach out to a farm for game meat (bison, duck, rabbit, venison).</li>
+      <li><strong>Choose one dish</strong> (or two if you're excited!).</li>
+    </ul>
+  </section>
+
+  <!-- WHAT'S ALREADY CLAIMED -->
+  <section>
+    <h2>What's Already Claimed</h2>
+    <p>This list updates automatically as people submit the form. Please check it before claiming.</p>
+
+    <!-- Mobile: show button -->
+    <div class="sheet-mobile">
+      <a href="https://docs.google.com/spreadsheets/d/e/2PACX-1vR0rQOoWNl-jz6STd5W5TG0A7ug8AZErl0Xh5Krsx7hQ6JHozgvKG41vldKXydPAY9ybsB9ckdZ7cID/pubhtml?gid=1096872766&single=true" target="_blank" rel="noopener" class="btn">View Claimed Dishes</a>
+    </div>
+
+    <!-- Desktop: show embedded sheet -->
+    <div class="sheet-desktop">
+      <div class="sheet-container">
+        <iframe src="https://docs.google.com/spreadsheets/d/e/2PACX-1vR0rQOoWNl-jz6STd5W5TG0A7ug8AZErl0Xh5Krsx7hQ6JHozgvKG41vldKXydPAY9ybsB9ckdZ7cID/pubhtml?gid=1096872766&single=true" title="Claimed dishes list"></iframe>
+      </div>
+    </div>
+  </section>
+
+  <!-- BROWSE RECIPES -->
+  <section>
+    <h2>Browse Recipes</h2>
+    <div class="filters">
+      <input type="text" id="searchBox" class="search-box" placeholder="Search recipes..." aria-label="Search recipes">
+
+      <div class="filter-label">Category</div>
+      <div class="filter-chips" id="filterChips">
+        <button class="chip active" data-category="all">All</button>
+        <button class="chip" data-category="Desserts/Beverages">Desserts/Beverages</button>
+        <button class="chip" data-category="Side/Vegetarian">Side/Vegetarian</button>
+        <button class="chip" data-category="Venison/Elk">Venison/Elk</button>
+        <button class="chip" data-category="Bison">Bison</button>
+        <button class="chip" data-category="Fish/Seafood">Fish/Seafood</button>
+        <button class="chip" data-category="Poultry">Poultry</button>
+        <button class="chip" data-category="Other Game">Other Game</button>
+      </div>
+
+      <div class="filter-label">Sourcing</div>
+      <div class="source-toggles" id="sourceToggles">
+        <button class="toggle-btn" data-source="easy">Show Easy to Source</button>
+        <button class="toggle-btn" data-source="hide-hard">Hide Hard to Source</button>
+      </div>
+
+      <button class="clear-filters" id="clearFilters">Clear filters</button>
+      <p class="hint-text">Tip: Check "What's Already Claimed" above before you submit.</p>
+
+      <div class="legend">
+        <div class="legend-title">What the badges mean</div>
+        <p style="margin: 4px 0;">
+          <strong>Difficulty</strong> — how involved the cooking is (1 = simple, 5 = multi-day project).
+          <span class="legend-scale">
+            <span class="legend-dot dot-1"></span>
+            <span class="legend-dot dot-2"></span>
+            <span class="legend-dot dot-3"></span>
+            <span class="legend-dot dot-4"></span>
+            <span class="legend-dot dot-5"></span>
+          </span>
+        </p>
+        <p style="margin: 4px 0;">
+          <strong>Sourcing</strong> — how hard the specialty ingredients are to get (1 = pantry staples, 5 = multiple specialty/foraged/hunted items).
+          <span class="legend-scale">
+            <span class="legend-dot dot-1"></span>
+            <span class="legend-dot dot-2"></span>
+            <span class="legend-dot dot-3"></span>
+            <span class="legend-dot dot-4"></span>
+            <span class="legend-dot dot-5"></span>
+          </span>
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- RECIPE LIST -->
+  <section id="recipeList">
+
+    <!-- DESSERTS/BEVERAGES -->
+    <div class="category-section" data-category="Desserts/Beverages">
+      <div class="category-header">
+        <h3 class="category-title">Desserts / Beverages</h3>
+      </div>
+      <div class="recipe-grid">
+
+        <div class="recipe-card" data-name="atole de cacao" data-desc="warm, frothy traditional maya drink made with masa harina, cacao, pepita milk, and ancho chile. unsweetened in the traditional style or lightly sweetened with agave." data-category="Desserts/Beverages" data-difficulty="2" data-accessibility="2">
+          <div class="recipe-name">Atole de Cacao</div>
+          <div class="recipe-desc">Warm, frothy traditional Maya drink made with masa harina, cacao, pepita milk, and ancho chile. Unsweetened in the traditional style or lightly sweetened with agave.</div>
+          <div class="recipe-badges">
+            <span class="badge level-2" title="Difficulty 2 of 5"><span class="badge-dot dot-2"></span>Difficulty 2/5</span>
+            <span class="badge level-2" title="Sourcing 2 of 5"><span class="badge-dot dot-2"></span>Sourcing 2/5</span>
+          </div>
+          <div class="recipe-notes">Need to make pepita milk first.</div>
+          <div class="recipe-meta">
+            <a href="https://github.com/wruwtrix/cookbook_turtle_island/blob/main/atole%20do%20cacao.pdf" target="_blank" rel="noopener" class="btn btn-small view-pdf-btn">View PDF</a>
+          </div>
+        </div>
+
+        <div class="recipe-card" data-name="hazelnut thumbprint cookies with rose hip sauce" data-desc="grain-free chewy cookies made entirely from hazelnut flour, butter, and oil, filled with a sweet-tart no-cook rose hip sauce." data-category="Desserts/Beverages" data-difficulty="2" data-accessibility="3">
+          <div class="recipe-name">Hazelnut Thumbprint Cookies with Rose Hip Sauce</div>
+          <div class="recipe-desc">Grain-free chewy cookies made entirely from hazelnut flour, butter, and oil, filled with a sweet-tart no-cook rose hip sauce.</div>
+          <div class="recipe-badges">
+            <span class="badge level-2" title="Difficulty 2 of 5"><span class="badge-dot dot-2"></span>Difficulty 2/5</span>
+            <span class="badge level-3" title="Sourcing 3 of 5"><span class="badge-dot dot-3"></span>Sourcing 3/5</span>
+          </div>
+          <div class="recipe-notes">Rose hip powder is online-only.</div>
+          <div class="recipe-meta">
+            <a href="https://github.com/wruwtrix/cookbook_turtle_island/blob/main/hazelnut%20thumbprint%20cookies.pdf" target="_blank" rel="noopener" class="btn btn-small view-pdf-btn">View PDF</a>
+          </div>
+        </div>
+
+        <div class="recipe-card" data-name="maple-chaga muffins with saskatoon berries" data-desc="wild rice and cassava flour muffins studded with berries, naturally flavored with chaga mushroom's vanilla-like notes." data-category="Desserts/Beverages" data-difficulty="2" data-accessibility="3">
+          <div class="recipe-name">Maple-Chaga Muffins with Saskatoon Berries</div>
+          <div class="recipe-desc">Wild rice and cassava flour muffins studded with berries, naturally flavored with chaga mushroom's vanilla-like notes.</div>
+          <div class="recipe-badges">
+            <span class="badge level-2" title="Difficulty 2 of 5"><span class="badge-dot dot-2"></span>Difficulty 2/5</span>
+            <span class="badge level-3" title="Sourcing 3 of 5"><span class="badge-dot dot-3"></span>Sourcing 3/5</span>
+          </div>
+          <div class="recipe-notes">Chaga powder online; blueberries sub fine for saskatoons; chicken eggs sub fine for duck.</div>
+          <div class="recipe-meta">
+            <a href="https://github.com/wruwtrix/cookbook_turtle_island/blob/main/maple%20chaga%20muffins.pdf" target="_blank" rel="noopener" class="btn btn-small view-pdf-btn">View PDF</a>
+          </div>
+        </div>
+
+        <div class="recipe-card" data-name="berry and bay laurel sorbet" data-desc="frozen berries blended with a concentrated california bay laurel syrup for a bright, herbal dessert." data-category="Desserts/Beverages" data-difficulty="2" data-accessibility="2">
+          <div class="recipe-name">Berry and Bay Laurel Sorbet</div>
+          <div class="recipe-desc">Frozen berries blended with a concentrated California bay laurel syrup for a bright, herbal dessert.</div>
+          <div class="recipe-badges">
+            <span class="badge level-2" title="Difficulty 2 of 5"><span class="badge-dot dot-2"></span>Difficulty 2/5</span>
+            <span class="badge level-2" title="Sourcing 2 of 5"><span class="badge-dot dot-2"></span>Sourcing 2/5</span>
+          </div>
+          <div class="recipe-notes">Regular bay leaves work — use fewer since they're milder than California bay.</div>
+          <div class="recipe-meta">
+            <a href="https://github.com/wruwtrix/cookbook_turtle_island/blob/main/berry%20bay%20laurel%20sorbet.pdf" target="_blank" rel="noopener" class="btn btn-small view-pdf-btn">View PDF</a>
+          </div>
+        </div>
+
+        <div class="recipe-card" data-name="black walnut cream tart" data-desc="crisp sunflower-amaranth crust filled with rich pureed black walnut 'cream' set with agar-agar, topped with seasonal berries." data-category="Desserts/Beverages" data-difficulty="3" data-accessibility="3">
+          <div class="recipe-name">Black Walnut Cream Tart</div>
+          <div class="recipe-desc">Crisp sunflower-amaranth crust filled with rich pureed black walnut 'cream' set with agar-agar, topped with seasonal berries.</div>
+          <div class="recipe-badges">
+            <span class="badge level-3" title="Difficulty 3 of 5"><span class="badge-dot dot-3"></span>Difficulty 3/5</span>
+            <span class="badge level-3" title="Sourcing 3 of 5"><span class="badge-dot dot-3"></span>Sourcing 3/5</span>
+          </div>
+          <div class="recipe-notes">Black walnuts, amaranth flour, and agar-agar all orderable online.</div>
+          <div class="recipe-meta">
+            <a href="https://github.com/wruwtrix/cookbook_turtle_island/blob/main/black%20walnut%20tart.pdf" target="_blank" rel="noopener" class="btn btn-small view-pdf-btn">View PDF</a>
+          </div>
+        </div>
+
+        <div class="recipe-card" data-name="chocolate-amaranth candy alegria de cacao" data-desc="popped amaranth and pepitas bound with melted unsweetened chocolate, vanilla, and honey. cut into squares." data-category="Desserts/Beverages" data-difficulty="2" data-accessibility="3">
+          <div class="recipe-name">Chocolate-Amaranth Candy (Alegría de Cacao)</div>
+          <div class="recipe-desc">Popped amaranth and pepitas bound with melted unsweetened chocolate, vanilla, and honey. Cut into squares.</div>
+          <div class="recipe-badges">
+            <span class="badge level-2" title="Difficulty 2 of 5"><span class="badge-dot dot-2"></span>Difficulty 2/5</span>
+            <span class="badge level-3" title="Sourcing 3 of 5"><span class="badge-dot dot-3"></span>Sourcing 3/5</span>
+          </div>
+          <div class="recipe-notes">Popped amaranth is the main specialty item.</div>
+          <div class="recipe-meta">
+            <a href="https://github.com/wruwtrix/cookbook_turtle_island/blob/main/chocolate%20amaranth%20candy.pdf" target="_blank" rel="noopener" class="btn btn-small view-pdf-btn">View PDF</a>
+          </div>
+        </div>
+
+        <div class="recipe-card" data-name="sumacade" data-desc="tart lemonade-like drink made by steeping sumac berries, lightly sweetened with agave or honey. served over ice." data-category="Desserts/Beverages" data-difficulty="1" data-accessibility="3">
+          <div class="recipe-name">Sumacade</div>
+          <div class="recipe-desc">Tart lemonade-like drink made by steeping sumac berries, lightly sweetened with agave or honey. Served over ice.</div>
+          <div class="recipe-badges">
+            <span class="badge level-1" title="Difficulty 1 of 5"><span class="badge-dot dot-1"></span>Difficulty 1/5</span>
+            <span class="badge level-3" title="Sourcing 3 of 5"><span class="badge-dot dot-3"></span>Sourcing 3/5</span>
+          </div>
+          <div class="recipe-notes">Dried sumac (or foraged fresh clusters) is the only specialty item.</div>
+          <div class="recipe-meta">
+            <a href="https://github.com/wruwtrix/cookbook_turtle_island/blob/main/sumacade.pdf" target="_blank" rel="noopener" class="btn btn-small view-pdf-btn">View PDF</a>
+          </div>
+        </div>
+
+        <div class="recipe-card" data-name="squash and pepita tartlets" data-desc="individual tartlets with a crunchy pepita crust and a silky squash-apple filling sweetened with maple." data-category="Desserts/Beverages" data-difficulty="3" data-accessibility="3">
+          <div class="recipe-name">Squash and Pepita Tartlets</div>
+          <div class="recipe-desc">Individual tartlets with a crunchy pepita crust and a silky squash-apple filling sweetened with maple.</div>
+          <div class="recipe-badges">
+            <span class="badge level-3" title="Difficulty 3 of 5"><span class="badge-dot dot-3"></span>Difficulty 3/5</span>
+            <span class="badge level-3" title="Sourcing 3 of 5"><span class="badge-dot dot-3"></span>Sourcing 3/5</span>
+          </div>
+          <div class="recipe-notes">Chamomile subs fine for pineapple weed; amaranth flour + agar-agar online.</div>
+          <div class="recipe-meta">
+            <a href="https://github.com/wruwtrix/cookbook_turtle_island/blob/main/squash%20pepita%20tartlets.pdf" target="_blank" rel="noopener" class="btn btn-small view-pdf-btn">View PDF</a>
+          </div>
+        </div>
+
+        <div class="recipe-card" data-name="sweet corn pudding with woodland berry sauce" data-desc="a chilled, creamy corn pudding (no eggs or cream) topped with a bright puree of berries and rose hips." data-category="Desserts/Beverages" data-difficulty="2" data-accessibility="3">
+          <div class="recipe-name">Sweet Corn Pudding with Woodland Berry Sauce</div>
+          <div class="recipe-desc">A chilled, creamy corn pudding (no eggs or cream) topped with a bright puree of berries and rose hips.</div>
+          <div class="recipe-badges">
+            <span class="badge level-2" title="Difficulty 2 of 5"><span class="badge-dot dot-2"></span>Difficulty 2/5</span>
+            <span class="badge level-3" title="Sourcing 3 of 5"><span class="badge-dot dot-3"></span>Sourcing 3/5</span>
+          </div>
+          <div class="recipe-notes">Frozen corn and berries are fine; dried rose hips online. Needs 6+ hours to chill.</div>
+          <div class="recipe-meta">
+            <a href="https://github.com/wruwtrix/cookbook_turtle_island/blob/main/sweet%20corn%20pudding.pdf" target="_blank" rel="noopener" class="btn btn-small view-pdf-btn">View PDF</a>
+          </div>
+        </div>
+
+        <div class="recipe-card" data-name="wild grape dumplings with pecan brittle" data-desc="chewy masa and cassava dumplings simmered in a deep purple grape sauce, finished with crunchy maple-pecan brittle." data-category="Desserts/Beverages" data-difficulty="3" data-accessibility="3">
+          <div class="recipe-name">Wild Grape Dumplings with Pecan Brittle</div>
+          <div class="recipe-desc">Chewy masa and cassava dumplings simmered in a deep purple grape sauce, finished with crunchy maple-pecan brittle.</div>
+          <div class="recipe-badges">
+            <span class="badge level-3" title="Difficulty 3 of 5"><span class="badge-dot dot-3"></span>Difficulty 3/5</span>
+            <span class="badge level-3" title="Sourcing 3 of 5"><span class="badge-dot dot-3"></span>Sourcing 3/5</span>
+          </div>
+          <div class="recipe-notes">Concord grapes + juice sub for Muscadine; fresh ginger subs for wild ginger.</div>
+          <div class="recipe-meta">
+            <a href="https://github.com/wruwtrix/cookbook_turtle_island/blob/main/wild%20grape%20dumplings.pdf" target="_blank" rel="noopener" class="btn btn-small view-pdf-btn">View PDF</a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- SIDE / VEGETARIAN -->
+    <div class="category-section" data-category="Side/Vegetarian">
+      <div class="category-header">
+        <h3 class="category-title">Side / Vegetarian</h3>
+      </div>
+      <div class="recipe-grid">
+
+        <div class="recipe-card" data-name="corn four ways tlacoyos tortillas pickled habaneros" data-desc="a masa tour: homemade corn tortillas, stuffed tlacoyos with squash filling, and pickled habaneros. a multi-part exploration of nixtamalized corn." data-category="Side/Vegetarian" data-difficulty="4" data-accessibility="2">
+          <div class="recipe-name">Corn Four Ways (Tlacoyos, Tortillas, Pickled Habaneros)</div>
+          <div class="recipe-desc">A masa tour: homemade corn tortillas, stuffed tlacoyos with squash filling, and pickled habaneros. A multi-part exploration of nixtamalized corn.</div>
+          <div class="recipe-badges">
+            <span class="badge level-4" title="Difficulty 4 of 5"><span class="badge-dot dot-4"></span>Difficulty 4/5</span>
+            <span class="badge level-2" title="Sourcing 2 of 5"><span class="badge-dot dot-2"></span>Sourcing 2/5</span>
+          </div>
+          <div class="recipe-notes">Masa harina is mainstream now; involved because it's three components.</div>
+          <div class="recipe-meta">
+            <a href="https://github.com/wruwtrix/cookbook_turtle_island/blob/main/corn%20four%20ways%20tacos.pdf" target="_blank" rel="noopener" class="btn btn-small view-pdf-btn">View PDF</a>
+          </div>
+        </div>
+
+        <div class="recipe-card" data-name="roasted smashed baby potatoes with wild greens pesto" data-desc="crispy smashed baby potatoes served with a bright pesto of pine nuts, wild greens, and garlic." data-category="Side/Vegetarian" data-difficulty="2" data-accessibility="2">
+          <div class="recipe-name">Roasted Smashed Baby Potatoes with Wild Greens Pesto</div>
+          <div class="recipe-desc">Crispy smashed baby potatoes served with a bright pesto of pine nuts, wild greens, and garlic.</div>
+          <div class="recipe-badges">
+            <span class="badge level-2" title="Difficulty 2 of 5"><span class="badge-dot dot-2"></span>Difficulty 2/5</span>
+            <span class="badge level-2" title="Sourcing 2 of 5"><span class="badge-dot dot-2"></span>Sourcing 2/5</span>
+          </div>
+          <div class="recipe-notes">Store watercress is a listed sub for wild greens; regular pine nuts sub for pinyon.</div>
+          <div class="recipe-meta">
+            <a href="https://github.com/wruwtrix/cookbook_turtle_island/blob/main/roasted%20potatoes%20with%20pesto.pdf" target="_blank" rel="noopener" class="btn btn-small view-pdf-btn">View PDF</a>
+          </div>
+        </div>
+
+        <div class="recipe-card" data-name="deseronto potato beans roasted mushrooms purslane" data-desc="earthy cooked beans and roasted mushrooms tossed with a ramp-vinegar dressing, garnished with fresh purslane and wild bergamot flowers." data-category="Side/Vegetarian" data-difficulty="2" data-accessibility="3">
+          <div class="recipe-name">Deseronto Potato Beans, Roasted Mushrooms, and Purslane</div>
+          <div class="recipe-desc">Earthy cooked beans and roasted mushrooms tossed with a ramp-vinegar dressing, garnished with fresh purslane and wild bergamot flowers.</div>
+          <div class="recipe-badges">
+            <span class="badge level-2" title="Difficulty 2 of 5"><span class="badge-dot dot-2"></span>Difficulty 2/5</span>
+            <span class="badge level-3" title="Sourcing 3 of 5"><span class="badge-dot dot-3"></span>Sourcing 3/5</span>
+          </div>
+          <div class="recipe-notes">Purslane may be foragable by early May; cannellini sub for Deseronto beans; rose hip and bergamot garnishes can be omitted if needed.</div>
+          <div class="recipe-meta">
+            <a href="https://github.com/wruwtrix/cookbook_turtle_island/blob/main/beans%20mushrooms%20purslane.pdf" target="_blank" rel="noopener" class="btn btn-small view-pdf-btn">View PDF</a>
+          </div>
+        </div>
+
+        <div class="recipe-card" data-name="tepary bean and squash chili" data-desc="vegetarian chili with drought-hardy tepary beans, winter squash, and roasted poblano/new mexico chiles, thickened with mesquite flour." data-category="Side/Vegetarian" data-difficulty="3" data-accessibility="3">
+          <div class="recipe-name">Tepary Bean and Squash Chili</div>
+          <div class="recipe-desc">Vegetarian chili with drought-hardy tepary beans, winter squash, and roasted poblano/New Mexico chiles, thickened with mesquite flour.</div>
+          <div class="recipe-badges">
+            <span class="badge level-3" title="Difficulty 3 of 5"><span class="badge-dot dot-3"></span>Difficulty 3/5</span>
+            <span class="badge level-3" title="Sourcing 3 of 5"><span class="badge-dot dot-3"></span>Sourcing 3/5</span>
+          </div>
+          <div class="recipe-notes">Any white beans sub for tepary; dried NM chiles + mesquite flour online.</div>
+          <div class="recipe-meta">
+            <a href="https://github.com/wruwtrix/cookbook_turtle_island/blob/main/beans%20squash%20chili.pdf" target="_blank" rel="noopener" class="btn btn-small view-pdf-btn">View PDF</a>
+          </div>
+        </div>
+
+        <div class="recipe-card" data-name="cedar-maple baked beans" data-desc="slow-baked lima beans sweetened with maple and infused with the piney aroma of cedar or balsam fir." data-category="Side/Vegetarian" data-difficulty="2" data-accessibility="2">
+          <div class="recipe-name">Cedar-Maple Baked Beans</div>
+          <div class="recipe-desc">Slow-baked lima beans sweetened with maple and infused with the piney aroma of cedar or balsam fir.</div>
+          <div class="recipe-badges">
+            <span class="badge level-2" title="Difficulty 2 of 5"><span class="badge-dot dot-2"></span>Difficulty 2/5</span>
+            <span class="badge level-2" title="Sourcing 2 of 5"><span class="badge-dot dot-2"></span>Sourcing 2/5</span>
+          </div>
+          <div class="recipe-notes">Balsam fir and white cedar grow locally; any multicolored lima beans work.</div>
+          <div class="recipe-meta">
+            <a href="https://github.com/wruwtrix/cookbook_turtle_island/blob/main/cedar%20maple%20baked%20beans.pdf" target="_blank" rel="noopener" class="btn btn-small view-pdf-btn">View PDF</a>
+          </div>
+        </div>
+
+        <div class="recipe-card" data-name="goldenrod shoots and maple pecans" data-desc="tender spring goldenrod shoots dressed with cider vinegar, served over duck egg aioli and sprinkled with maple-candied pecans." data-category="Side/Vegetarian" data-difficulty="3" data-accessibility="4">
+          <div class="recipe-name">Goldenrod Shoots and Maple Pecans</div>
+          <div class="recipe-desc">Tender spring goldenrod shoots dressed with cider vinegar, served over duck egg aioli and sprinkled with maple-candied pecans.</div>
+          <div class="recipe-badges">
+            <span class="badge level-3" title="Difficulty 3 of 5"><span class="badge-dot dot-3"></span>Difficulty 3/5</span>
+            <span class="badge level-4" title="Sourcing 4 of 5"><span class="badge-dot dot-4"></span>Sourcing 4/5</span>
+          </div>
+          <div class="recipe-notes">Goldenrod shoots are niche foraging; duck egg aioli is a component (chicken egg works).</div>
+          <div class="recipe-meta">
+            <a href="https://github.com/wruwtrix/cookbook_turtle_island/blob/main/goldenrod%20shoots.pdf" target="_blank" rel="noopener" class="btn btn-small view-pdf-btn">View PDF</a>
+          </div>
+        </div>
+
+        <div class="recipe-card" data-name="jicama and pineapple salad with chile-achiote salt" data-desc="crisp jicama and sweet pineapple dressed with agave and sprinkled with a homemade salt of toasted chile, achiote, and sea salt." data-category="Side/Vegetarian" data-difficulty="1" data-accessibility="2">
+          <div class="recipe-name">Jicama and Pineapple Salad with Chile-Achiote Salt</div>
+          <div class="recipe-desc">Crisp jicama and sweet pineapple dressed with agave and sprinkled with a homemade salt of toasted chile, achiote, and sea salt.</div>
+          <div class="recipe-badges">
+            <span class="badge level-1" title="Difficulty 1 of 5"><span class="badge-dot dot-1"></span>Difficulty 1/5</span>
+            <span class="badge level-2" title="Sourcing 2 of 5"><span class="badge-dot dot-2"></span>Sourcing 2/5</span>
+          </div>
+          <div class="recipe-notes">Achiote seeds + chile de árbol online.</div>
+          <div class="recipe-meta">
+            <a href="https://github.com/wruwtrix/cookbook_turtle_island/blob/main/jicama%20pineapple%20salad.pdf" target="_blank" rel="noopener" class="btn btn-small view-pdf-btn">View PDF</a>
+          </div>
+        </div>
+
+        <div class="recipe-card" data-name="dzotobilchay maya tamales with chaya and eggs" data-desc="yucatan-style tamales with masa mixed with chaya/spinach, filled with hard-boiled duck egg and toasted pepitas, served with roasted tomato sauce." data-category="Side/Vegetarian" data-difficulty="5" data-accessibility="3">
+          <div class="recipe-name">Dzotobilchay (Maya Tamales with Chaya and Eggs)</div>
+          <div class="recipe-desc">Yucatán-style tamales with masa mixed with chaya/spinach, filled with hard-boiled duck egg and toasted pepitas, served with roasted tomato sauce.</div>
+          <div class="recipe-badges">
+            <span class="badge level-5" title="Difficulty 5 of 5"><span class="badge-dot dot-5"></span>Difficulty 5/5</span>
+            <span class="badge level-3" title="Sourcing 3 of 5"><span class="badge-dot dot-3"></span>Sourcing 3/5</span>
+          </div>
+          <div class="recipe-notes">Advanced: hours of work. Spinach subs easily for chaya; corn husks locally available.</div>
+          <div class="recipe-meta">
+            <a href="https://github.com/wruwtrix/cookbook_turtle_island/blob/main/Maya%20tamales.pdf" target="_blank" rel="noopener" class="btn btn-small view-pdf-btn">View PDF</a>
+          </div>
+        </div>
+
+        <div class="recipe-card" data-name="sunflower seed risotto with maple-roasted squash and prairie pesto" data-desc="creamy, risotto-style dish made with sunflower seeds instead of rice, topped with maple-glazed squash and drizzled with a wild greens pesto." data-category="Side/Vegetarian" data-difficulty="3" data-accessibility="3">
+          <div class="recipe-name">Sunflower Seed 'Risotto' with Maple-Roasted Squash and Prairie Pesto</div>
+          <div class="recipe-desc">Creamy, risotto-style dish made with sunflower seeds instead of rice, topped with maple-glazed squash and drizzled with a wild greens pesto.</div>
+          <div class="recipe-badges">
+            <span class="badge level-3" title="Difficulty 3 of 5"><span class="badge-dot dot-3"></span>Difficulty 3/5</span>
+            <span class="badge level-3" title="Sourcing 3 of 5"><span class="badge-dot dot-3"></span>Sourcing 3/5</span>
+          </div>
+          <div class="recipe-notes">Vegetable broth subs for roasted bird stock; some wild greens in season by May.</div>
+          <div class="recipe-meta">
+            <a href="https://github.com/wruwtrix/cookbook_turtle_island/blob/main/sunflower%20risotto%20with%20squash.pdf" target="_blank" rel="noopener" class="btn btn-small view-pdf-btn">View PDF</a>
+          </div>
+        </div>
+
+        <div class="recipe-card" data-name="wild rice tamales with smoked mushrooms and rose hip" data-desc="tamales made with wild rice-studded masa, filled with quickly smoked oyster mushrooms, served with a sweet-tart mixed berry wojapi sauce." data-category="Side/Vegetarian" data-difficulty="5" data-accessibility="3">
+          <div class="recipe-name">Wild Rice Tamales with Smoked Mushrooms and Rose Hip</div>
+          <div class="recipe-desc">Tamales made with wild rice-studded masa, filled with quickly smoked oyster mushrooms, served with a sweet-tart mixed berry wojapi sauce.</div>
+          <div class="recipe-badges">
+            <span class="badge level-5" title="Difficulty 5 of 5"><span class="badge-dot dot-5"></span>Difficulty 5/5</span>
+            <span class="badge level-3" title="Sourcing 3 of 5"><span class="badge-dot dot-3"></span>Sourcing 3/5</span>
+          </div>
+          <div class="recipe-notes">Advanced: multi-step tamale project. Rose hip powder online; corn husks locally available.</div>
+          <div class="recipe-meta">
+            <a href="https://github.com/wruwtrix/cookbook_turtle_island/blob/main/wild%20rice%20tamales.pdf" target="_blank" rel="noopener" class="btn btn-small view-pdf-btn">View PDF</a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- VENISON / ELK -->
+    <div class="category-section" data-category="Venison/Elk">
+      <div class="category-header">
+        <h3 class="category-title">Venison / Elk</h3>
+      </div>
+      <div class="recipe-grid">
+
+        <div class="recipe-card" data-name="venison and tepary bean chili" data-desc="robust chili with ground venison (or any ground meat), tepary beans, fresh tomatoes, and a puree of toasted guajillo, morita, and ancho chiles." data-category="Venison/Elk" data-difficulty="3" data-accessibility="3">
+          <div class="recipe-name">Venison and Tepary Bean Chili</div>
+          <div class="recipe-desc">Robust chili with ground venison (or any ground meat), tepary beans, fresh tomatoes, and a puree of toasted guajillo, morita, and ancho chiles.</div>
+          <div class="recipe-badges">
+            <span class="badge level-3" title="Difficulty 3 of 5"><span class="badge-dot dot-3"></span>Difficulty 3/5</span>
+            <span class="badge level-3" title="Sourcing 3 of 5"><span class="badge-dot dot-3"></span>Sourcing 3/5</span>
+          </div>
+          <div class="recipe-notes">Venison findable with effort locally; any ground meat is a listed sub.</div>
+          <div class="recipe-meta">
+            <a href="https://github.com/wruwtrix/cookbook_turtle_island/blob/main/venison%20chili.pdf" target="_blank" rel="noopener" class="btn btn-small view-pdf-btn">View PDF</a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- BISON -->
+    <div class="category-section" data-category="Bison">
+      <div class="category-header">
+        <h3 class="category-title">Bison</h3>
+      </div>
+      <div class="recipe-grid">
+
+        <div class="recipe-card" data-name="pulled bison arepas with elderberry bbq sauce" data-desc="slow-cooked pulled bison shoulder tossed in a sweet-tangy elderberry barbecue sauce, served on homemade corn arepas." data-category="Bison" data-difficulty="4" data-accessibility="4">
+          <div class="recipe-name">Pulled Bison Arepas with Elderberry BBQ Sauce</div>
+          <div class="recipe-desc">Slow-cooked pulled bison shoulder tossed in a sweet-tangy elderberry barbecue sauce, served on homemade corn arepas.</div>
+          <div class="recipe-badges">
+            <span class="badge level-4" title="Difficulty 4 of 5"><span class="badge-dot dot-4"></span>Difficulty 4/5</span>
+            <span class="badge level-4" title="Sourcing 4 of 5"><span class="badge-dot dot-4"></span>Sourcing 4/5</span>
+          </div>
+          <div class="recipe-notes">Bison needs sourcing; dried elderberries central to sauce (no real sub); 10–12 hr braise.</div>
+          <div class="recipe-meta">
+            <a href="https://github.com/wruwtrix/cookbook_turtle_island/blob/main/bison%20arepas.pdf" target="_blank" rel="noopener" class="btn btn-small view-pdf-btn">View PDF</a>
+          </div>
+        </div>
+
+        <div class="recipe-card" data-name="smoked bison rib-eye with plains chimichurri" data-desc="dry-brined bison steaks smoked over oak then seared, served with a wild-greens chimichurri of anise hyssop, garlic, and vinegar." data-category="Bison" data-difficulty="4" data-accessibility="3">
+          <div class="recipe-name">Smoked Bison Rib-eye with Plains Chimichurri</div>
+          <div class="recipe-desc">Dry-brined bison steaks smoked over oak then seared, served with a wild-greens chimichurri of anise hyssop, garlic, and vinegar.</div>
+          <div class="recipe-badges">
+            <span class="badge level-4" title="Difficulty 4 of 5"><span class="badge-dot dot-4"></span>Difficulty 4/5</span>
+            <span class="badge level-3" title="Sourcing 3 of 5"><span class="badge-dot dot-3"></span>Sourcing 3/5</span>
+          </div>
+          <div class="recipe-notes">Bison needs sourcing; garden herbs sub for anise hyssop/wild mint.</div>
+          <div class="recipe-meta">
+            <a href="https://github.com/wruwtrix/cookbook_turtle_island/blob/main/bison%20ribeye.pdf" target="_blank" rel="noopener" class="btn btn-small view-pdf-btn">View PDF</a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- FISH / SEAFOOD -->
+    <div class="category-section" data-category="Fish/Seafood">
+      <div class="category-header">
+        <h3 class="category-title">Fish / Seafood</h3>
+      </div>
+      <div class="recipe-grid">
+
+        <div class="recipe-card" data-name="charred rainbow trout with ramps cattails and carrot-honey puree" data-desc="crispy-skinned trout served over silky honeyed carrot puree with grilled cattail shoots, ramps, and blanched nettles." data-category="Fish/Seafood" data-difficulty="4" data-accessibility="3">
+          <div class="recipe-name">Charred Rainbow Trout with Ramps, Cattails, and Carrot-Honey Puree</div>
+          <div class="recipe-desc">Crispy-skinned trout served over silky honeyed carrot puree with grilled cattail shoots, ramps, and blanched nettles.</div>
+          <div class="recipe-badges">
+            <span class="badge level-4" title="Difficulty 4 of 5"><span class="badge-dot dot-4"></span>Difficulty 4/5</span>
+            <span class="badge level-3" title="Sourcing 3 of 5"><span class="badge-dot dot-3"></span>Sourcing 3/5</span>
+          </div>
+          <div class="recipe-notes">Ramps, cattails, and nettles all in season in Northern MN in early May — ideal timing if comfortable foraging.</div>
+          <div class="recipe-meta">
+            <a href="https://github.com/wruwtrix/cookbook_turtle_island/blob/main/trout%20with%20ramps%20and%20cattails.pdf" target="_blank" rel="noopener" class="btn btn-small view-pdf-btn">View PDF</a>
+          </div>
+        </div>
+
+        <div class="recipe-card" data-name="grilled whole trout with wild berry relish" data-desc="simple campfire-style whole trout stuffed with wild onion greens and conifer needles, served with a hand-crushed wild berry relish." data-category="Fish/Seafood" data-difficulty="2" data-accessibility="2">
+          <div class="recipe-name">Grilled Whole Trout with Wild Berry Relish</div>
+          <div class="recipe-desc">Simple campfire-style whole trout stuffed with wild onion greens and conifer needles, served with a hand-crushed wild berry relish.</div>
+          <div class="recipe-badges">
+            <span class="badge level-2" title="Difficulty 2 of 5"><span class="badge-dot dot-2"></span>Difficulty 2/5</span>
+            <span class="badge level-2" title="Sourcing 2 of 5"><span class="badge-dot dot-2"></span>Sourcing 2/5</span>
+          </div>
+          <div class="recipe-notes">Raspberries listed as sub; white pine abundant locally.</div>
+          <div class="recipe-meta">
+            <a href="https://github.com/wruwtrix/cookbook_turtle_island/blob/main/trout%20with%20wild%20berry%20sauce.pdf" target="_blank" rel="noopener" class="btn btn-small view-pdf-btn">View PDF</a>
+          </div>
+        </div>
+
+        <div class="recipe-card" data-name="sherry pocknett's fish hash" data-desc="comforting hash of local fish with crispy yukon gold potatoes and onions. optionally topped with fried duck eggs." data-category="Fish/Seafood" data-difficulty="2" data-accessibility="2">
+          <div class="recipe-name">Sherry Pocknett's Fish Hash</div>
+          <div class="recipe-desc">Comforting hash of local fish with crispy Yukon Gold potatoes and onions. Optionally topped with fried duck eggs.</div>
+          <div class="recipe-badges">
+            <span class="badge level-2" title="Difficulty 2 of 5"><span class="badge-dot dot-2"></span>Difficulty 2/5</span>
+            <span class="badge level-2" title="Sourcing 2 of 5"><span class="badge-dot dot-2"></span>Sourcing 2/5</span>
+          </div>
+          <div class="recipe-notes">Walleye or other local fish works great; garlic powder subs for ramp powder.</div>
+          <div class="recipe-meta">
+            <a href="https://github.com/wruwtrix/cookbook_turtle_island/blob/main/fish%20hash.pdf" target="_blank" rel="noopener" class="btn btn-small view-pdf-btn">View PDF</a>
+          </div>
+        </div>
+
+        <div class="recipe-card" data-name="lobster salad with sweet corn in cool elderberry broth" data-desc="cool elderberry broth pooled around a salad of lobster, charred corn, crispy fried garlic, and toasted pepitas." data-category="Fish/Seafood" data-difficulty="3" data-accessibility="4">
+          <div class="recipe-name">Lobster Salad with Sweet Corn in Cool Elderberry Broth</div>
+          <div class="recipe-desc">Cool elderberry broth pooled around a salad of lobster, charred corn, crispy fried garlic, and toasted pepitas.</div>
+          <div class="recipe-badges">
+            <span class="badge level-3" title="Difficulty 3 of 5"><span class="badge-dot dot-3"></span>Difficulty 3/5</span>
+            <span class="badge level-4" title="Sourcing 4 of 5"><span class="badge-dot dot-4"></span>Sourcing 4/5</span>
+          </div>
+          <div class="recipe-notes">Lobster not local (frozen tails possible); dried elderberries required for broth.</div>
+          <div class="recipe-meta">
+            <a href="https://github.com/wruwtrix/cookbook_turtle_island/blob/main/lobster%20elderberry%20salad.pdf" target="_blank" rel="noopener" class="btn btn-small view-pdf-btn">View PDF</a>
+          </div>
+        </div>
+
+        <div class="recipe-card" data-name="maple-glazed salmon" data-desc="simple oven-baked wild salmon glazed with maple, cider vinegar, and sumac." data-category="Fish/Seafood" data-difficulty="1" data-accessibility="2">
+          <div class="recipe-name">Maple-Glazed Salmon</div>
+          <div class="recipe-desc">Simple oven-baked wild salmon glazed with maple, cider vinegar, and sumac.</div>
+          <div class="recipe-badges">
+            <span class="badge level-1" title="Difficulty 1 of 5"><span class="badge-dot dot-1"></span>Difficulty 1/5</span>
+            <span class="badge level-2" title="Sourcing 2 of 5"><span class="badge-dot dot-2"></span>Sourcing 2/5</span>
+          </div>
+          <div class="recipe-notes">Frozen wild salmon fine; sumac online.</div>
+          <div class="recipe-meta">
+            <a href="https://github.com/wruwtrix/cookbook_turtle_island/blob/main/maple%20glazed%20salmon.pdf" target="_blank" rel="noopener" class="btn btn-small view-pdf-btn">View PDF</a>
+          </div>
+        </div>
+
+        <div class="recipe-card" data-name="indigenous-inspired shrimp n grits" data-desc="creamy corn grits topped with wild shrimp, smoked turkey, fresh tomatoes, and file-thickened gravy made from shrimp-shell and corn stock." data-category="Fish/Seafood" data-difficulty="4" data-accessibility="3">
+          <div class="recipe-name">Indigenous-Inspired Shrimp 'n' Grits</div>
+          <div class="recipe-desc">Creamy corn grits topped with wild shrimp, smoked turkey, fresh tomatoes, and filé-thickened gravy made from shrimp-shell and corn stock.</div>
+          <div class="recipe-badges">
+            <span class="badge level-4" title="Difficulty 4 of 5"><span class="badge-dot dot-4"></span>Difficulty 4/5</span>
+            <span class="badge level-3" title="Sourcing 3 of 5"><span class="badge-dot dot-3"></span>Sourcing 3/5</span>
+          </div>
+          <div class="recipe-notes">Frozen wild shrimp fine; sumac + filé online. Multi-step but worth it.</div>
+          <div class="recipe-meta">
+            <a href="https://github.com/wruwtrix/cookbook_turtle_island/blob/main/shrimp%20grits.pdf" target="_blank" rel="noopener" class="btn btn-small view-pdf-btn">View PDF</a>
+          </div>
+        </div>
+
+        <div class="recipe-card" data-name="smoked salmon-black walnut spread" data-desc="creamy spread of home-smoked salmon bound with pureed black walnut 'cream,' brightened with herbs, capers, and fennel. served with cassava chips. (includes hot-smoked salmon sub-recipe.)" data-category="Fish/Seafood" data-difficulty="5" data-accessibility="4">
+          <div class="recipe-name">Smoked Salmon-Black Walnut Spread</div>
+          <div class="recipe-desc">Creamy spread of home-smoked salmon bound with pureed black walnut 'cream,' brightened with herbs, capers, and fennel. Served with cassava chips. (Includes hot-smoked salmon sub-recipe.)</div>
+          <div class="recipe-badges">
+            <span class="badge level-5" title="Difficulty 5 of 5"><span class="badge-dot dot-5"></span>Difficulty 5/5</span>
+            <span class="badge level-4" title="Sourcing 4 of 5"><span class="badge-dot dot-4"></span>Sourcing 4/5</span>
+          </div>
+          <div class="recipe-notes">Multi-day: brine + smoke salmon (or use store-bought hot-smoked salmon as sub); capers 1 week ahead or use store capers.</div>
+          <div class="recipe-meta">
+            <a href="https://github.com/wruwtrix/cookbook_turtle_island/blob/main/smoked%20salmon%20walnut%20spread.pdf" target="_blank" rel="noopener" class="btn btn-small view-pdf-btn">View PDF</a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- POULTRY -->
+    <div class="category-section" data-category="Poultry">
+      <div class="category-header">
+        <h3 class="category-title">Poultry</h3>
+      </div>
+      <div class="recipe-grid">
+
+        <div class="recipe-card" data-name="turkey and mushroom stew with sassafras and pine broth" data-desc="dusky stew of slow-cooked turkey leg with dried and fresh wild mushrooms, flavored with sassafras root, pine needles, and file powder." data-category="Poultry" data-difficulty="3" data-accessibility="4">
+          <div class="recipe-name">Turkey and Mushroom Stew with Sassafras and Pine Broth</div>
+          <div class="recipe-desc">Dusky stew of slow-cooked turkey leg with dried and fresh wild mushrooms, flavored with sassafras root, pine needles, and filé powder.</div>
+          <div class="recipe-badges">
+            <span class="badge level-3" title="Difficulty 3 of 5"><span class="badge-dot dot-3"></span>Difficulty 3/5</span>
+            <span class="badge level-4" title="Sourcing 4 of 5"><span class="badge-dot dot-4"></span>Sourcing 4/5</span>
+          </div>
+          <div class="recipe-notes">Sassafras is the blocker — hard to source; stew still works with pine alone.</div>
+          <div class="recipe-meta">
+            <a href="https://github.com/wruwtrix/cookbook_turtle_island/blob/main/turkey%20mushroom%20stew.pdf" target="_blank" rel="noopener" class="btn btn-small view-pdf-btn">View PDF</a>
+          </div>
+        </div>
+
+        <div class="recipe-card" data-name="slow-roasted turkey breast with sand plum sauce" data-desc="gently slow-roasted bone-in turkey breast served over a lightly sweetened wild plum sauce, with bergamot and sumac." data-category="Poultry" data-difficulty="3" data-accessibility="4">
+          <div class="recipe-name">Slow-Roasted Turkey Breast with Sand Plum Sauce</div>
+          <div class="recipe-desc">Gently slow-roasted bone-in turkey breast served over a lightly sweetened wild plum sauce, with bergamot and sumac.</div>
+          <div class="recipe-badges">
+            <span class="badge level-3" title="Difficulty 3 of 5"><span class="badge-dot dot-3"></span>Difficulty 3/5</span>
+            <span class="badge level-4" title="Sourcing 4 of 5"><span class="badge-dot dot-4"></span>Sourcing 4/5</span>
+          </div>
+          <div class="recipe-notes">Sand plums tough to source — frozen plums or a plum jam thinned with water would work.</div>
+          <div class="recipe-meta">
+            <a href="https://github.com/wruwtrix/cookbook_turtle_island/blob/main/slow%20roasted%20turkey%20plum.pdf" target="_blank" rel="noopener" class="btn btn-small view-pdf-btn">View PDF</a>
+          </div>
+        </div>
+
+        <div class="recipe-card" data-name="duck wild rice and cranberry sausage patties" data-desc="free-form duck sausage patties with wild rice and cranberries, served with poached duck eggs and a dandelion-cranberry chimichurri." data-category="Poultry" data-difficulty="3" data-accessibility="4">
+          <div class="recipe-name">Duck, Wild Rice, and Cranberry Sausage Patties</div>
+          <div class="recipe-desc">Free-form duck sausage patties with wild rice and cranberries, served with poached duck eggs and a dandelion-cranberry chimichurri.</div>
+          <div class="recipe-badges">
+            <span class="badge level-3" title="Difficulty 3 of 5"><span class="badge-dot dot-3"></span>Difficulty 3/5</span>
+            <span class="badge level-4" title="Sourcing 4 of 5"><span class="badge-dot dot-4"></span>Sourcing 4/5</span>
+          </div>
+          <div class="recipe-notes">Ground duck + duck eggs both require sourcing effort; dandelion in season by May.</div>
+          <div class="recipe-meta">
+            <a href="https://github.com/wruwtrix/cookbook_turtle_island/blob/main/duck%20wild%20rice%20cranberry%20patties.pdf" target="_blank" rel="noopener" class="btn btn-small view-pdf-btn">View PDF</a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- OTHER GAME -->
+    <div class="category-section" data-category="Other Game">
+      <div class="category-header">
+        <h3 class="category-title">Other Game</h3>
+      </div>
+      <div class="recipe-grid">
+
+        <div class="recipe-card" data-name="balsam fir braised moose with sunchoke mash" data-desc="gamey moose (or elk/deer/venison) braised in mushroom broth with balsam fir boughs, served over creamy sunchoke mash with sauteed ramps." data-category="Other Game" data-difficulty="4" data-accessibility="4">
+          <div class="recipe-name">Balsam Fir Braised Moose with Sunchoke Mash</div>
+          <div class="recipe-desc">Gamey moose (or elk/deer/venison) braised in mushroom broth with balsam fir boughs, served over creamy sunchoke mash with sautéed ramps.</div>
+          <div class="recipe-badges">
+            <span class="badge level-4" title="Difficulty 4 of 5"><span class="badge-dot dot-4"></span>Difficulty 4/5</span>
+            <span class="badge level-4" title="Sourcing 4 of 5"><span class="badge-dot dot-4"></span>Sourcing 4/5</span>
+          </div>
+          <div class="recipe-notes">Moose very hard to find; elk/deer/venison all listed as subs. Balsam fir grows locally.</div>
+          <div class="recipe-meta">
+            <a href="https://github.com/wruwtrix/cookbook_turtle_island/blob/main/balsam%20fir%20braised%20meat%20.pdf" target="_blank" rel="noopener" class="btn btn-small view-pdf-btn">View PDF</a>
+          </div>
+        </div>
+
+        <div class="recipe-card" data-name="incense cedar-braised rabbit with greens" data-desc="rabbit browned and braised in a fragrant cedar stock with agave, vinegar, and wilted wild greens." data-category="Other Game" data-difficulty="4" data-accessibility="3">
+          <div class="recipe-name">Incense Cedar-Braised Rabbit with Greens</div>
+          <div class="recipe-desc">Rabbit browned and braised in a fragrant cedar stock with agave, vinegar, and wilted wild greens.</div>
+          <div class="recipe-badges">
+            <span class="badge level-4" title="Difficulty 4 of 5"><span class="badge-dot dot-4"></span>Difficulty 4/5</span>
+            <span class="badge level-3" title="Sourcing 3 of 5"><span class="badge-dot dot-3"></span>Sourcing 3/5</span>
+          </div>
+          <div class="recipe-notes">Rabbit sourcing effort; northern white cedar subs for incense cedar (grows locally).</div>
+          <div class="recipe-meta">
+            <a href="https://github.com/wruwtrix/cookbook_turtle_island/blob/main/cedar%20braised%20rabbit.pdf" target="_blank" rel="noopener" class="btn btn-small view-pdf-btn">View PDF</a>
+          </div>
+        </div>
+
+        <div class="recipe-card" data-name="rabbit soup with corn dumplings" data-desc="savory rabbit broth with pulled meat and soft masa dumplings (chochoyote-style), dimpled to hold the broth." data-category="Other Game" data-difficulty="3" data-accessibility="3">
+          <div class="recipe-name">Rabbit Soup with Corn Dumplings</div>
+          <div class="recipe-desc">Savory rabbit broth with pulled meat and soft masa dumplings (chochoyote-style), dimpled to hold the broth.</div>
+          <div class="recipe-badges">
+            <span class="badge level-3" title="Difficulty 3 of 5"><span class="badge-dot dot-3"></span>Difficulty 3/5</span>
+            <span class="badge level-3" title="Sourcing 3 of 5"><span class="badge-dot dot-3"></span>Sourcing 3/5</span>
+          </div>
+          <div class="recipe-notes">Rabbit sourcing effort; masa harina easy.</div>
+          <div class="recipe-meta">
+            <a href="https://github.com/wruwtrix/cookbook_turtle_island/blob/main/rabbit%20soup.pdf" target="_blank" rel="noopener" class="btn btn-small view-pdf-btn">View PDF</a>
+          </div>
+        </div>
+
+        <div class="recipe-card" data-name="smoked rabbit with cranberry beans and dried strawberries" data-desc="multi-day project: rabbit brined, smoked, braised, then sauteed with cranberry beans, ramps, and dandelion, finished with dried strawberries." data-category="Other Game" data-difficulty="5" data-accessibility="3">
+          <div class="recipe-name">Smoked Rabbit with Cranberry Beans and Dried Strawberries</div>
+          <div class="recipe-desc">Multi-day project: rabbit brined, smoked, braised, then sautéed with cranberry beans, ramps, and dandelion, finished with dried strawberries.</div>
+          <div class="recipe-badges">
+            <span class="badge level-5" title="Difficulty 5 of 5"><span class="badge-dot dot-5"></span>Difficulty 5/5</span>
+            <span class="badge level-3" title="Sourcing 3 of 5"><span class="badge-dot dot-3"></span>Sourcing 3/5</span>
+          </div>
+          <div class="recipe-notes">Advanced: brine overnight → smoke 3 hrs → braise 1.5 hrs → finish. White pine + dandelion both abundant by May.</div>
+          <div class="recipe-meta">
+            <a href="https://github.com/wruwtrix/cookbook_turtle_island/blob/main/smoked%20rabbit.pdf" target="_blank" rel="noopener" class="btn btn-small view-pdf-btn">View PDF</a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </section>
+
+  <div id="noResults" class="no-results hidden">
+    <p>No recipes match your filters.</p>
+  </div>
+
+  <!-- FOOTER -->
+  <section class="footer-cta">
+    <h2 style="border: none; margin-top: 0;">Ready to claim your dish?</h2>
+    <p><a href="https://docs.google.com/forms/d/e/1FAIpQLSdMS8PpiPLefXv5nAcJMtCeDgSjvC3XxlYAJjve9yofyuZ6AA/viewform?usp=header" target="_blank" rel="noopener" class="btn">Claim Your Dish</a></p>
+    <p style="margin-top: 16px;">If you have questions, just text me.</p>
+    <p><strong>Please pick your dish by Friday, May 1st.</strong></p>
+  </section>
+
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+  var searchBox = document.getElementById("searchBox");
+  var filterChips = document.getElementById("filterChips");
+  var sourceToggles = document.getElementById("sourceToggles");
+  var clearFilters = document.getElementById("clearFilters");
+
+  searchBox.addEventListener("input", filterRecipes);
+
+  filterChips.addEventListener("click", function(e) {
+    if (e.target.classList.contains("chip")) {
+      var chips = document.querySelectorAll(".chip");
+      for (var i = 0; i < chips.length; i++) {
+        chips[i].classList.remove("active");
+      }
+      e.target.classList.add("active");
+      filterRecipes();
+    }
+  });
+
+  // Mutually-exclusive sourcing toggles
+  sourceToggles.addEventListener("click", function(e) {
+    if (e.target.classList.contains("toggle-btn")) {
+      var clicked = e.target;
+      var wasActive = clicked.classList.contains("active");
+      // Deactivate all, then re-activate this one if it wasn't already
+      var toggles = document.querySelectorAll(".toggle-btn");
+      for (var i = 0; i < toggles.length; i++) {
+        toggles[i].classList.remove("active");
+      }
+      if (!wasActive) {
+        clicked.classList.add("active");
+      }
+      filterRecipes();
+    }
+  });
+
+  clearFilters.addEventListener("click", function() {
+    searchBox.value = "";
+    var chips = document.querySelectorAll(".chip");
+    for (var i = 0; i < chips.length; i++) {
+      chips[i].classList.remove("active");
+    }
+    document.querySelector('.chip[data-category="all"]').classList.add("active");
+    var toggles = document.querySelectorAll(".toggle-btn");
+    for (var i = 0; i < toggles.length; i++) {
+      toggles[i].classList.remove("active");
+    }
+    filterRecipes();
+  });
+
+  function filterRecipes() {
+    var searchTerm = searchBox.value.toLowerCase().trim();
+    var activeChip = document.querySelector(".chip.active");
+    var selectedCategory = activeChip ? activeChip.getAttribute("data-category") : "all";
+    var activeToggle = document.querySelector(".toggle-btn.active");
+    var sourceMode = activeToggle ? activeToggle.getAttribute("data-source") : null;
+    var anyVisible = false;
+
+    var sections = document.querySelectorAll(".category-section");
+    for (var i = 0; i < sections.length; i++) {
+      var section = sections[i];
+      var sectionCategory = section.getAttribute("data-category");
+      var categoryMatch = selectedCategory === "all" || sectionCategory === selectedCategory;
+
+      if (!categoryMatch) {
+        section.classList.add("hidden");
+        continue;
+      }
+
+      var sectionHasVisible = false;
+      var cards = section.querySelectorAll(".recipe-card");
+
+      for (var j = 0; j < cards.length; j++) {
+        var card = cards[j];
+        var name = card.getAttribute("data-name");
+        var desc = card.getAttribute("data-desc");
+        var category = card.getAttribute("data-category").toLowerCase();
+        var accessibility = parseInt(card.getAttribute("data-accessibility"), 10);
+
+        var searchMatch = !searchTerm ||
+          name.indexOf(searchTerm) !== -1 ||
+          desc.indexOf(searchTerm) !== -1 ||
+          category.indexOf(searchTerm) !== -1;
+
+        var sourceMatch = true;
+        if (sourceMode === "easy") {
+          sourceMatch = accessibility <= 2;
+        } else if (sourceMode === "hide-hard") {
+          sourceMatch = accessibility <= 3;
+        }
+
+        if (searchMatch && sourceMatch) {
+          card.classList.remove("hidden");
+          sectionHasVisible = true;
+          anyVisible = true;
+        } else {
+          card.classList.add("hidden");
+        }
+      }
+
+      if (sectionHasVisible) {
+        section.classList.remove("hidden");
+      } else {
+        section.classList.add("hidden");
+      }
+    }
+
+    var noResults = document.getElementById("noResults");
+    if (anyVisible) {
+      noResults.classList.add("hidden");
+    } else {
+      noResults.classList.remove("hidden");
+    }
+  }
+});
+</script>
+
+</body>
+</html>
